@@ -23,7 +23,7 @@ import {join} from 'path';
 // Express server
 const app = express();
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 const DIST_FOLDER = join(process.cwd(), 'dist/browser');
 
 // * NOTE :: leave this as require() since this file is built Dynamically from webpack
@@ -53,9 +53,6 @@ app.get('*', (req, res) => {
 });
 
 // Start up the Node server
-// app.listen(PORT, () => {
-//   console.log(`Node Express server listening on http://localhost:${PORT}`);
-// });
-app.listen((process.env.PORT, '0.0.0.0'), function(){
-  console.log('listening on *:5000');
+app.listen(PORT, () => {
+  console.log(`Node Express server listening on http://localhost:${PORT}`);
 });
