@@ -54,6 +54,8 @@ app.get('*', (req, res) => {
 
 // Start up the Node server
 // app.listen(PORT, () => {
-//   //console.log(`Node Express server listening on http://localhost:${PORT}`);
+//   console.log(`Node Express server listening on http://localhost:${PORT}`);
 // });
-app.listen(process.env.PORT || 8080);
+app.listen((process.env.PORT || 5000), function(){
+  console.log('listening on *:5000');
+});
