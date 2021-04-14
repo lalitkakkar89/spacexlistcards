@@ -7,45 +7,31 @@ import { Observable } from "rxjs";
 })
 export class SpacesXService {
   Url = "https://api.spacexdata.com/v3/launches?";
+  constructor(readonly http: HttpClient) { }
 
-  constructor(private Http: HttpClient) {}
-
-  getAllLaunches(): Observable<any> {
-    return this.Http.get(this.Url);
-  }
-  // https://api.spacexdata.com/v3/launches?launch_success=true
-  getLaunches(param): Observable<any> {
-    return this.Http.get(this.Url + "launch_success=" + param);
-  }
-
-  getLaunches_Land(param): Observable<any> {
-    return this.Http.get(this.Url + "land_success=" + param);
+  getProgmasList()
+  {
+    return this.http.get('https://api.spacexdata.com/v3/launches?limit=100');
   }
 
   getYear(param): Observable<any> {
-    return this.Http.get(this.Url + "launch_year=" + param);
+    return this.http.get(this.Url + "launch_year=" + param);
   }
 
-  getAll(launchYear, launchSuccess, landSuccess): Observable<any> {
-    return this.Http.get(
-      this.Url +
-        "launch_year=" +
-        launchYear +
-        "&launch_success=" +
-        launchSuccess +
-        "&land_success=" +
-        landSuccess
+  getLaunches(param): Observable<any> {
+    return this.http.get(this.Url + "launch_success=" + param);
+  }
+
+  getLaunchandLand(launchSuccessvalue, landSuccessValue): Observable<any> {
+    return this.http.get(this.Url +"limit=100" +"&launch_success=" +launchSuccessvalue +"&land_success=" +landSuccessValue);
+  }
+
+  getAllPrograms(launchYear, launchSuccess, landSuccess): Observable<any> {
+    return this.http.get(this.Url +"launch_year=" +launchYear +"&launch_success=" +launchSuccess +"&land_success=" +landSuccess
     );
   }
 
-  getLaunchLand(launchSuccess, landSuccess): Observable<any> {
-    return this.Http.get(
-      this.Url +
-        "limit=100" +
-        "&launch_success=" +
-        launchSuccess +
-        "&land_success=" +
-        landSuccess
-    );
+  getLandingOnly(param): Observable<any> {
+    return this.http.get(this.Url + "land_success=" + param);
   }
 }
