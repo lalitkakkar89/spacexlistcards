@@ -9,6 +9,16 @@
   height: 600px;
 }
 
+.card-title
+{
+  color:rgb(8, 41, 151);
+}
+
+.spacelabels
+{
+  font-weight: bold;
+}
+
 .card:hover {
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
@@ -53,14 +63,15 @@
   background-color: lightgray;
 }
 .background-green {
-  background-color: lightgreen;
+  background-color: rgb(9, 175, 9);
   border-radius: 4px;
   padding: 10px;
   padding: 10px 25px;
   margin: 5px;
+  border:none;
 }
 .background-green:hover {
-  background-color: red;
+  background-color: rgb(8, 139, 8);
 }
 .background-green:focus {
   background-color: green !important;
@@ -71,7 +82,7 @@
   text-align: center;
 }
 .horizontal-line {
-  width: 70%;
+  width: 100%;
   margin-top: 0;
   margin-bottom: 0;
 }

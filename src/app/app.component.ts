@@ -11,113 +11,36 @@ import { Meta, Title } from "@angular/platform-browser";
   styleUrls: ["./app.component.css"],
 })
 export class AppComponent implements OnInit {
-  launches: any;
-  launchYear = [];
-  uniqueLaunchYear = [];
-  index = 0;
-  launchesCount = 0;
-  launchStatus: string = "";
-  landstatus: string = "";
+  programs : any;
   year: string = "";
-
-  constructor(
-    @Inject(PLATFORM_ID) private platformId: object,
-    private router: Router,
-    private location: Location,
-    private spacesXService: SpacesXService,
-    private title: Title,
-    private meta: Meta
-  ) {
+  launches: any;
+  years = [2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020];
+  launchStatus: any;
+  recordCount: any;
+  landingStatus: any;
+  developerName: "Lalit Kakkar";
+  constructor( @Inject(PLATFORM_ID) private platformId: object,private SpaceService:SpacesXService,private router: Router) { 
     if (isPlatformBrowser(this.platformId)) {
-      this.getMethod();
+      this.getSpacexPrograms();
     }
   }
-  ngOnInit() {
-    this.title.setTitle("spacesX launches");
-    this.meta.addTag({ keywords: "angular8, ssr, single page application" });
-    this.meta.addTag({
-      description: "create single page application in angular",
-    });
+  
+
+  ngOnInit(): void {
+    
   }
 
-  getMethod() {
-    this.spacesXService.getAllLaunches().subscribe((data) => {
-      this.launches = data;
-      this.launchesCount = data.length;
-
-      for (let i = 0; i < this.launches.length; i++) {
-        this.launchYear[i] = this.launches[i].launch_year;
-      }
-      this.launchYear.sort((a, b) => {
-        return a - b;
-      });
-
-      for (let i = 0, j = 1; i < this.launchYear.length; i++, j++) {
-        if (this.launchYear[i] != this.launchYear[j]) {
-          this.uniqueLaunchYear[this.index] = this.launchYear[i];
-          this.index++;
-        }
-      }
+  getSpacexPrograms()
+  {
+    this.SpaceService.getProgmasList().subscribe(currentPrograms => {
+      this.programs = currentPrograms;
+      this.recordCount = this.programs.length;
+      
+    },
+    error => {
+     
     });
-  }
 
-  filterLaunch(event) {
-    this.launchStatus = event.target.textContent.toLowerCase();
-    this.router.navigate([""], {
-      queryParams: { limit: 100, launch_status: this.launchStatus },
-    });
-    this.spacesXService.getLaunches(this.launchStatus).subscribe((data) => {
-      this.launches = data;
-      this.launchesCount = data.length;
-    });
-  }
-
-  filter_land(event) {
-    this.landstatus = event.target.textContent.toLowerCase();
-
-    if (this.launchStatus != "" && this.landstatus != "" && this.year == "") {
-      this.spacesXService
-        .getLaunchLand(this.launchStatus, this.landstatus)
-        .subscribe((data) => {
-          this.launches = data;
-          this.launchesCount = data.length;
-          this.router.navigate([""], {
-            queryParams: {
-              limit: 100,
-              launch_status: this.launchStatus,
-              land_status: this.landstatus,
-            },
-          });
-        });
-    } else if (
-      this.launchStatus != "" &&
-      this.landstatus != "" &&
-      this.year != ""
-    ) {
-      this.spacesXService
-        .getAll(this.year, this.launchStatus, this.landstatus)
-        .subscribe((data) => {
-          this.launches = data;
-          this.launchesCount = data.length;
-          this.router.navigate([""], {
-            queryParams: {
-              limit: 100,
-              launch_status: this.launchStatus,
-              land_status: this.landstatus,
-              launch_year: this.year,
-            },
-          });
-          return;
-        });
-    } else {
-      this.spacesXService
-        .getLaunches_Land(this.landstatus)
-        .subscribe((data) => {
-          this.launches = data;
-          this.launchesCount = data.length;
-          return;
-        });
-    }
   }
 
   filterYear(year) {
@@ -125,8 +48,64 @@ export class AppComponent implements OnInit {
     this.router.navigate([""], {
       queryParams: { limit: 100, year: this.year },
     });
-    this.spacesXService.getYear(this.year).subscribe((data) => {
-      this.launches = data;
+    this.SpaceService.getYear(this.year).subscribe((data) => {
+      this.programs = data;
+      this.recordCount = data.length;
     });
+  }
+
+  launchFilter(event) {
+    this.launchStatus = event.target.textContent.toLowerCase();
+    this.router.navigate([""], {
+      queryParams: { limit: 100, launch_status: this.launchStatus },
+    });
+    this.SpaceService.getLaunches(this.launchStatus).subscribe((data) => {
+      this.programs = data;
+      this.recordCount = data.length;
+    });
+  }
+
+  landFilter(event) {
+    this.landingStatus = event.target.textContent.toLowerCase();
+
+    if (this.launchStatus != "" && this.landingStatus != "" && this.year == "") {
+      this.SpaceService
+        .getLaunchandLand(this.launchStatus, this.landingStatus)
+        .subscribe((data) => {
+          this.programs = data;
+          this.recordCount = data.length;
+          this.router.navigate([""], {
+            queryParams: {
+              limit: 100,
+              launch_status: this.launchStatus,
+              land_status: this.landingStatus,
+            },
+          });
+        });
+    } else if (this.launchStatus != "" && this.landingStatus != "" && this.year != "") {
+     
+      this.SpaceService
+        .getAllPrograms(this.year, this.launchStatus, this.landingStatus)
+        .subscribe((data) => {
+          this.programs = data;
+          this.recordCount = data.length;
+          this.router.navigate([""], {
+            queryParams: {
+              limit: 100,
+              launch_status: this.launchStatus,
+              land_status: this.landingStatus,
+              launch_year: this.year,
+            },
+          });
+          return;
+        });
+    } else {
+      this.SpaceService
+        .getLandingOnly(this.landingStatus).subscribe((data) => {
+          this.programs = data;
+          this.recordCount = data.length;
+          return;
+        });
+    }
   }
 }

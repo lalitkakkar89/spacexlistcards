@@ -1,21 +1,19 @@
+
 <h2 class="container">SpaceX Launch Program</h2>
 <div class="container">
   <div class="card left-container">
     <h4 class="filter-text">Filters</h4>
-    <p style="text-align: center; margin: 0">Launch Year</p>
+    <p style="text-align: center; margin: 0"><b>Launch Year</b></p>
     <hr class="horizontal-line" />
     <div class="left-flex-container">
-      <div
-        *ngFor="let year of uniqueLaunchYear; let i = index"
-        class="launch-year"
-      >
-        <div (click)="filterYear(year)" class="year-btn">
-          <button class="background-green" tabindex="{{ i + 1 }}">
-            {{ year }}
-          </button>
+        <div  class="launch-year" *ngFor="let yearsList of years">
+            <div class="year-btn">
+                <button (click)="filterYear(yearsList)" class="background-green">{{yearsList}}</button>
+            </div>
+            
         </div>
-      </div>
     </div>
+
 
     <p style="text-align: center; margin: 0; margin-top: 35px">
       <b>Successful Launch</b>
@@ -23,16 +21,8 @@
     <hr class="horizontal-line" />
     <br />
     <div class="launch-land-button">
-      <span
-        class="background-green"
-        (click)="filterLaunch($event)"
-        value="true"
-        tabindex="1"
-        >True</span
-      >
-      <span class="background-green" (click)="filterLaunch($event)" tabindex="2"
-        >False</span
-      >
+        <button (click)="launchFilter($event)" class="background-green">True</button>
+        <button (click)="launchFilter($event)" class="background-green">False</button>
     </div>
     <p style="text-align: center; margin: 0; margin-top: 35px">
       <b>Successful Landing</b>
@@ -40,53 +30,38 @@
     <hr class="horizontal-line" />
     <br />
     <div class="launch-land-button">
-      <span class="background-green" (click)="filter_land($event)" tabindex="1"
-        >True</span
-      >
-      <span class="background-green" (click)="filter_land($event)" tabindex="2"
-        >False</span
-      >
+        <button (click)="landFilter($event)" class="background-green">True</button>
+        <button (click)="landFilter($event)" class="background-green">False</button>
     </div>
   </div>
 
   <div class="right-container">
-    <div *ngFor="let launch of launches" class="launch-card">
+    <div *ngFor="let list of programs" class="launch-card">
       <div class="launch-card-padding">
         <div class="img-container">
-          <img
-            src="{{ launch.links.mission_patch_small }}"
-            alt="Avatar"
-            class="image"
-          />
+            <img class="image" src="{{list.links.mission_patch_small}}" alt="Space Logo">
         </div>
 
-        <h4 style="color: blue">
-          {{ launch.mission_name }} # {{ launch.flight_number }}
-        </h4>
-        <h4>
-          Mission_ID:
-          <ul>
-            <li style="color: grey">{{ launch.mission_id }}</li>
-          </ul>
-        </h4>
-        <h4>
-          Launch Year:
-          <span style="color: grey">{{ launch.launch_year }}</span>
-        </h4>
-        <h4>
-          Successful Launch:
-          <span style="color: grey">{{ launch.launch_success }}</span>
-        </h4>
-        <h4>
-          Successful Landing:<span style="color: grey">{{
-            launch.rocket.first_stage.cores[0].land_success
-          }}</span>
-        </h4>
+        <div class="card-body">
+            <h5 class="card-title">{{list.mission_name}} # {{ list.flight_number }}</h5>
+            <p class="card-text">
+                <span class="spacelabels">Mission Ids: </span> 
+                <br>
+                <span class="text-primary">{{list.mission_id}}</span>
+              </p>
+              <p>
+                  <span class="spacelabels"> Launch Year: </span> <span class="text-primary">{{list.launch_year}}</span>
+              </p>
+              <p>
+                  <span class="spacelabels">Successful Launch: </span> <span class="text-primary">{{list.launch_success}}</span>
+              </p>
+              <p>
+                  <span class="spacelabels">Successful Landing: </span> <span class="text-primary">{{list.rocket.first_stage.cores[0].land_success}}</span>
+              </p>
+            
+          </div>
       </div>
     </div>
-    <h1 *ngIf="launchesCount == 0" style="margin-left: 40%">
-      No Record Found !!!
-    </h1>
   </div>
 </div>
-<div class="footer"><b>Developed By: </b>Manpal Singh</div>
+<div class="footer"><b>Developed by: </b>{{developerName}}</div>
